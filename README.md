@@ -1,8 +1,8 @@
-# Study 
+# Database-Systems-and-Cloud-Computing
 
 This repo contains some of my school projects that are related to cloud, databases and machine learning 
 
-Currently it host my works on MySQL works,
+Currently it host my works on MySQL works
 
 * * *
 
