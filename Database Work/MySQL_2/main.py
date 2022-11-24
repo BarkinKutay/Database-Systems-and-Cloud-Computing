@@ -1,8 +1,11 @@
+#Student ID: 2002044
+
 from mysql import connector
 import scripts as run
 import sys
 
 if __name__ == "__main__":
+    print(sys.argv)
     my_connection = connector.connect(
         host="localhost",
         user="root",
@@ -11,11 +14,10 @@ if __name__ == "__main__":
     )
 
     my_cursor = my_connection.cursor()
+    
+    
     print("----------------------------------------")
-    try:
-        my_cursor.execute("""DROP DATABASE banking""")
-    except:
-        print("DOESNT EXIST")
+    
 
     run.create_database(my_cursor,"banking")
 

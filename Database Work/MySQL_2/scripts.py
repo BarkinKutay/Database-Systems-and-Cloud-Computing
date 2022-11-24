@@ -4,13 +4,20 @@ from random import randint
 
 
 def create_database(my_cursor ,name:str):
-    """Create MySQL schema (database)
+    """Create MySQL schema (database). 
+    If the schema is already present within the user 
+    it will drop it and will create a new one.
     
     my_curser: CMySQLCursor
     name: alias for MySQL schema(database)
     """
-    my_cursor.execute(f"""CREATE DATABASE {name}""")
-    my_cursor.execute(f"""use {name}""")
+    try:
+        my_cursor.execute(f"DROP DATABASE {name}")
+    except:
+        print("DOESNT EXIST")
+    
+    my_cursor.execute(f"CREATE DATABASE {name}")
+    my_cursor.execute(f"use {name}")
 
     print(f"Using db:{name}")
 
