@@ -3,14 +3,16 @@ import variables
 from random import randint
 
 
+
 def create_database(my_cursor ,name:str):
     """Create MySQL schema (database). 
-    If the schema is already present within the user 
-    it will drop it and will create a new one.
+    WARNING: If the schema is already present within the 
+    host it will drop it and will create a new one.
     
     my_curser: CMySQLCursor
     name: alias for MySQL schema(database)
     """
+    
     try:
         my_cursor.execute(f"DROP DATABASE {name}")
     except:
