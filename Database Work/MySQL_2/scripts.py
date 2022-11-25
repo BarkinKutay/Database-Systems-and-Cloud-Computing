@@ -97,7 +97,7 @@ def sample_imput(my_cursor, size: int):
         supplier = variables.s_data[randint(0,s_size-1)]
         sid = supplier[0]
         color = variables.i_colour[randint(0,c_size-1)]
-        if sid == "6" and color == "red":
+        if sid == "6" and color == "Red":
             continue
 
         name = variables.i_name[randint(0,n_size-1)]
