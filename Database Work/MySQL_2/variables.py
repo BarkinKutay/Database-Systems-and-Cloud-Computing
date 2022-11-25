@@ -1,15 +1,22 @@
 i_colour =(
-    "red",
-    "orange",
-    "yellow",
-    "green",
-    "blue",
-    "purple",
-    "pink",
-    "white",
-    "grey",
-    "black"
+    "White",
+    "Silver",
+    "Gray",
+    "Black",
+    "Maroon",
+    "Red",
+    "Orange",
+    "Yellow",
+    "Green",
+    "Cyan",
+    "Blue",
+    "Navy" ,
+    "Purple",
+    "Magenta",
+    "Pink",
+    "Brown"
 )
+
 """COLOUR list as tuple for catalogue data creation"""
 
 i_name =(
