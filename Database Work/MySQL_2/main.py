@@ -84,9 +84,9 @@ if __name__ == "__main__":
                         ORDER BY total DESC
                     """)
     
-    print("{:12} {:4}".format("Name","Item Count"))
+    print("{:12} {:4}".format("Name","RED Item Count"))
     for row in my_cursor:
-         print(f"|{row[0]:12} {row[1]:<4}")
+         print(f"|{row[0]:12} {row[1]:7}")
 
     linebreak()
 
