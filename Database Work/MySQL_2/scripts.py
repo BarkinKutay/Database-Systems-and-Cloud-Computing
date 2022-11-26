@@ -1,6 +1,6 @@
 from mysql import connector
 import variables
-from random import randint
+import random
 
 
 
@@ -78,29 +78,27 @@ def create_tables(my_cursor):
     print("Tables created")
 
 def sample_imput(my_cursor, size: int):
-    c_size = len(variables.i_colour)
-    n_size = len(variables.i_name)
-    s_size = len(variables.s_data)
-    
+        
     catalog = {}
     order_data = []
     parts = {}
 
     #Sample Imput
     for x in range(size):
-        price = float(randint(1,100))/(100.0)
         #Price range 0-1
-        quantity = randint(1,5)
+        price = random.random()
         #Quantity range per order is 1-5
+        quantity = random.randint(1,5)
 
-
-        supplier = variables.s_data[randint(0,s_size-1)]
+        supplier = random.choice(variables.s_data)
         sid = supplier[0]
-        color = variables.i_colour[randint(0,c_size-1)]
+        color = random.choice(variables.i_colour)
+        
+        #Supplier with id 6 doesnt sell red items soo we check that here
         if sid == "6" and color == "Red":
             continue
 
-        name = variables.i_name[randint(0,n_size-1)]
+        name = random.choice(variables.i_name)
 
         c_key = f"{sid}_{color}_{name}"
         p_key = f"{color}_{name}"
@@ -111,9 +109,10 @@ def sample_imput(my_cursor, size: int):
                 parts[p_key][2] += quantity
             except:
                 parts[p_key] = (color, name, quantity)
-        p_key = list(parts).index(p_key)+1
+                
+        sku = list(parts).index(p_key)+1
 
-        order_data.append((len(order_data)+1, int(sid) ,p_key,quantity))
+        order_data.append((int(sid), sku, quantity))
     
     #INSERT Suppliers
     supplier_data=[]
@@ -122,7 +121,7 @@ def sample_imput(my_cursor, size: int):
         sname = supplier[1]
         city = supplier[2]
         street = supplier[3]
-
+        
         supplier_data.append((int(sid), sname, city, street))
     sql = "INSERT INTO Suppliers (sid, sname, city, street) VALUES (%s, %s, %s, %s)"
     my_cursor.executemany(sql, supplier_data)
@@ -132,7 +131,7 @@ def sample_imput(my_cursor, size: int):
     part_data = []
     for part in parts:
         pname = part
-        stock_level = parts[part][2]+randint(0,10)
+        stock_level = parts[part][2]+random.randint(0,10)
         color = parts[part][0]
 
         part_data.append((pname, stock_level, color))
@@ -152,6 +151,6 @@ def sample_imput(my_cursor, size: int):
     print("Catalog INSERTED")
 
     #INSERT Orders
-    sql = "INSERT INTO Orders (oid, sid, sku, quantity) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO Orders (sid, sku, quantity) VALUES (%s, %s, %s)"
     my_cursor.executemany(sql, order_data)
     print("Orders INSERTED")
