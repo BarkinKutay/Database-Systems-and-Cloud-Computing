@@ -47,12 +47,12 @@ i_name =(
 """ITEM list as tuple for catalogue data creation"""
 
 s_data = (
-    ("1", "Bmazon", "Istanbul", "Yildiz"),
-    ("2", "AtaExpress", "Izmir", "Buca"),
-    ("3", "Armut", "Istanbul", "Bahcelievler"),
-    ("4", "Samsun", "Samsun", "Atakum"),
-    ("5", "KacakCay", "Istanbul", "Yildiz"),
-    ("6", "KIRMISIZLAR", "Izmir", "Dikili")
+    ("Bmazon", "Istanbul", "Yildiz"),
+    ("AtaExpress", "Izmir", "Buca"),
+    ("Armut", "Istanbul", "Bahcelievler"),
+    ("Samsun", "Samsun", "Atakum"),
+    ("KacakCay", "Istanbul", "Yildiz"),
+    ("KIRMISIZLAR", "Izmir", "Dikili")
 )
 
 

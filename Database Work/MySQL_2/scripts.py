@@ -83,6 +83,9 @@ def sample_imput(my_cursor, size: int):
     order_data = []
     parts = {}
 
+    Colors = variables.i_colour
+    Names = variables.i_name
+    Suppliers = variables.s_data
     #Sample Imput
     for x in range(size):
         #Price range 0-1
@@ -90,9 +93,10 @@ def sample_imput(my_cursor, size: int):
         #Quantity range per order is 1-5
         quantity = random.randint(1,5)
 
-        supplier = random.choice(variables.s_data)
-        sid = supplier[0]
-        color = random.choice(variables.i_colour)
+        supplier = random.choice(Suppliers)
+        sid = Suppliers.index(supplier)+1
+        
+        color = random.choice(Colors)
         
         #Supplier with id 6 doesnt sell red items soo we check that here
         if sid == "6" and color == "Red":
@@ -106,37 +110,23 @@ def sample_imput(my_cursor, size: int):
         if c_key not in catalog:
             catalog[c_key] = (sid, p_key,  price)
             try:
-                parts[p_key][2] += quantity
+                parts[p_key][1] += quantity
             except:
-                parts[p_key] = (color, name, quantity)
+                parts[p_key] = (quantity, color)
                 
         sku = list(parts).index(p_key)+1
 
         order_data.append((int(sid), sku, quantity))
     
     #INSERT Suppliers
-    supplier_data=[]
-    for supplier in variables.s_data:
-        sid = supplier[0]
-        sname = supplier[1]
-        city = supplier[2]
-        street = supplier[3]
-        
-        supplier_data.append((int(sid), sname, city, street))
-    sql = "INSERT INTO Suppliers (sid, sname, city, street) VALUES (%s, %s, %s, %s)"
-    my_cursor.executemany(sql, supplier_data)
+    sql = "INSERT INTO Suppliers (sname, city, street) VALUES (%s, %s, %s)"    
+    my_cursor.executemany(sql, Suppliers)
     print("Suppliers INSERTED")
 
     #INSERT Parts
-    part_data = []
-    for part in parts:
-        pname = part
-        stock_level = parts[part][2]+random.randint(0,10)
-        color = parts[part][0]
-
-        part_data.append((pname, stock_level, color))
+    parts_l = [(key,)+value for key, value in parts.items()]
     sql = "INSERT INTO Parts (pname, stock_level, color) VALUES (%s, %s, %s)"
-    my_cursor.executemany(sql, part_data)
+    my_cursor.executemany(sql, parts_l)
     print("Parts INSERTED")
 
     #INSERT Catalog
