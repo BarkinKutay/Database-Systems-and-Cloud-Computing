@@ -1,5 +1,5 @@
 #Student ID: 2002044
-
+import time
 from mysql import connector
 import scripts as run
 import sys
@@ -11,6 +11,7 @@ def linebreak(char="-",len=37):
     
     
 if __name__ == "__main__":
+    start = time.time()
     """
     Can be run with arguments: 
     example: main.py data_size schema_name 
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     
     linebreak()
     
-    
+
     run.create_database(my_cursor,schema_name)
 
     # Task-1: 
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     run.sample_imput(my_cursor,data_size)
     my_connection.commit()
     linebreak()
-
+    print(time.time()-start)
 
     # Task 3:
     # Write the SQL statement to find the supplier names who supply some red part.
@@ -99,6 +100,7 @@ if __name__ == "__main__":
     # placed to the supplier.
     # Implement the task in python.
     
+
     my_cursor.execute("""
                         SELECT o.sid, s.sname, SUM(o.quantity*c.unit_price) AS total 
                         FROM Catalog c, Orders o, Suppliers s
