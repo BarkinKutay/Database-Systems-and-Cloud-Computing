@@ -79,10 +79,15 @@ def create_tables(my_cursor):
 
 def sample_imput(my_cursor, size: int):
         
-    catalog = {}
+    catalog = []
     order_data = []
     parts = {}
-
+    
+    # we pull the variables from variables.py
+    Colors = variables.i_colour
+    Names = variables.i_name
+    Suppliers = variables.s_data
+    
     #Sample Imput
     for x in range(size):
         #Price range 0-1
@@ -90,64 +95,46 @@ def sample_imput(my_cursor, size: int):
         #Quantity range per order is 1-5
         quantity = random.randint(1,5)
 
-        supplier = random.choice(variables.s_data)
-        sid = supplier[0]
-        color = random.choice(variables.i_colour)
+        supplier = random.choice(Suppliers)
+        sid = Suppliers.index(supplier)+1
+        
+        color = random.choice(Colors)
         
         #Supplier with id 6 doesnt sell red items soo we check that here
-        if sid == "6" and color == "Red":
+        if supplier[0]=="KIRMISIZLAR" and color == "Red":
             continue
-
-        name = random.choice(variables.i_name)
-
-        c_key = f"{sid}_{color}_{name}"
+        
+        name = random.choice(Names)
         p_key = f"{color}_{name}"
-
-        if c_key not in catalog:
-            catalog[c_key] = (sid, p_key,  price)
-            try:
-                parts[p_key][2] += quantity
-            except:
-                parts[p_key] = (color, name, quantity)
-                
-        sku = list(parts).index(p_key)+1
+        
+        try:
+            sku = list(parts).index(p_key)+1
+            parts[p_key][1] += quantity
+        except:
+            parts[p_key] = (quantity, color)
+            sku = list(parts).index(p_key)+1
+        
+        if (int(sid), sku, price) not in catalog:
+            catalog.append((int(sid), sku, price))
 
         order_data.append((int(sid), sku, quantity))
     
     #INSERT Suppliers
-    supplier_data=[]
-    for supplier in variables.s_data:
-        sid = supplier[0]
-        sname = supplier[1]
-        city = supplier[2]
-        street = supplier[3]
-        
-        supplier_data.append((int(sid), sname, city, street))
-    sql = "INSERT INTO Suppliers (sid, sname, city, street) VALUES (%s, %s, %s, %s)"
-    my_cursor.executemany(sql, supplier_data)
+    sql = "INSERT INTO Suppliers (sname, city, street) VALUES (%s, %s, %s)"    
+    my_cursor.executemany(sql, Suppliers)
     print("Suppliers INSERTED")
 
     #INSERT Parts
-    part_data = []
-    for part in parts:
-        pname = part
-        stock_level = parts[part][2]+random.randint(0,10)
-        color = parts[part][0]
-
-        part_data.append((pname, stock_level, color))
+    
+    #we must first convert parts dict to list for clean insersion
+    parts_l = [(key,)+value for key, value in parts.items()]
     sql = "INSERT INTO Parts (pname, stock_level, color) VALUES (%s, %s, %s)"
-    my_cursor.executemany(sql, part_data)
+    my_cursor.executemany(sql, parts_l)
     print("Parts INSERTED")
 
     #INSERT Catalog
-    catalog_data = []
-    for item in catalog:
-        sid = catalog[item][0]
-        p_key = list(parts).index(catalog[item][1])+1
-        unit_price = catalog[item][2]
-        catalog_data.append((sid, p_key, unit_price))
     sql = "INSERT INTO Catalog (sid, sku, unit_price) VALUES (%s, %s, %s)"
-    my_cursor.executemany(sql, catalog_data)
+    my_cursor.executemany(sql, catalog)
     print("Catalog INSERTED")
 
     #INSERT Orders
