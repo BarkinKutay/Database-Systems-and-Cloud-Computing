@@ -1,17 +1,16 @@
 #Student ID: 2002044
-import time
+
 from mysql import connector
 import scripts as run
 import sys
 
-def linebreak(char="-",len=37):
-    for x in range(len-1):
+def linebreak(char="-",lenght=37):
+    for x in range(round((lenght-1)/len(char))):
         print(char, end ="")
     print(char)
     
     
 if __name__ == "__main__":
-    start = time.time()
     """
     Can be run with arguments: 
     example: main.py data_size schema_name 
@@ -33,9 +32,6 @@ if __name__ == "__main__":
         
         
     ### START
-    
-    print(f"{data_size} / {schema_name}")
-    
     #First we initialize the connection more detail will be present at MySQL_1
     
     my_connection = connector.connect(
@@ -46,9 +42,6 @@ if __name__ == "__main__":
     )
     my_cursor = my_connection.cursor()
     
-    
-    linebreak()
-    
 
     run.create_database(my_cursor,schema_name)
 
@@ -57,7 +50,9 @@ if __name__ == "__main__":
     # including appropriate primary and foreign key integrity 
     # constraints. 
     # Implement the task in python:
-    
+    linebreak()
+    print("Task 1:")
+    linebreak("- ")
     run.create_tables(my_cursor)
     linebreak()
 
@@ -65,15 +60,20 @@ if __name__ == "__main__":
     # Task 2:
     # Write the DML statements to insert sample data to the tables.
     # Implement the task in python.
+    print("Task 2:")
+    linebreak("- ")
     
+    print(f"Sample data size: {data_size}")
+    linebreak("- ")
     run.sample_imput(my_cursor,data_size)
     my_connection.commit()
     linebreak()
-    print(time.time()-start)
 
     # Task 3:
     # Write the SQL statement to find the supplier names who supply some red part.
     # Implement the task in python. 
+    print("Task 3:")
+    linebreak("- ")
     
     my_cursor.execute("""
                         SELECT sname, COUNT(p.color) AS total
@@ -86,6 +86,7 @@ if __name__ == "__main__":
                     """)
     
     print("{:12} {:4}".format("Name","RED Item Count"))
+    linebreak("- ")
     for row in my_cursor:
          print(f"|{row[0]:12} {row[1]:7}")
 
@@ -99,7 +100,8 @@ if __name__ == "__main__":
     # The total order value for a supplier is the sum of all the orders 
     # placed to the supplier.
     # Implement the task in python.
-    
+    print("Task 4:")
+    linebreak("- ")
 
     my_cursor.execute("""
                         SELECT o.sid, s.sname, SUM(o.quantity*c.unit_price) AS total 
@@ -112,11 +114,10 @@ if __name__ == "__main__":
                         ORDER BY total DESC
                     """)
 
-    print("{:5} {:<11}: {:20}".format("SID", "Name", "Total Oreder Value"))
+    print("{:5} {:<12}: {:21}".format("SID", "Name", "Total Oreder Value"))
     for row in my_cursor:
         print(f"|{row[0]:<4} {row[1]:<12}: {round(row[2],3):<10}"
 )
-        
         
     linebreak()
     
