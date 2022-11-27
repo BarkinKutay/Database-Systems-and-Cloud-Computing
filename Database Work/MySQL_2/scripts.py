@@ -21,7 +21,7 @@ def create_database(my_cursor ,name:str):
     my_cursor.execute(f"CREATE DATABASE {name}")
     my_cursor.execute(f"use {name}")
 
-    print(f"Using db:{name}")
+    print(f"Using db: {name}")
 
 def create_tables(my_cursor):
 
@@ -125,8 +125,6 @@ def sample_imput(my_cursor, size: int):
     print("Suppliers INSERTED")
 
     #INSERT Parts
-    
-    #we must first convert parts dict to list for clean insersion
     parts_l = [(key,)+value for key, value in parts.items()]
     sql = "INSERT INTO Parts (pname, stock_level, color) VALUES (%s, %s, %s)"
     my_cursor.executemany(sql, parts_l)
